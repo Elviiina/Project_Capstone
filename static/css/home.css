@@ -1,0 +1,268 @@
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Header */
+header {
+    background-color: #0077B6;
+    padding: 20px 0;
+}
+
+.logo img {
+    width: 82px;
+    height: 92px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-buttons {
+    display: flex;
+}
+
+.auth-buttons button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: 'Poppins', sans-serif; /* Mengatur font untuk tombol */
+    font-weight: 700; /* Mengatur berat font */
+}
+
+.auth-buttons .btn-register {
+    background-color: white;
+    color: #0077B6;;
+}
+
+.auth-buttons .btn-login {
+    background-color: #0077B6;
+    color: white;
+    border: 2px solid white;
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px 5%; 
+    background-color: white;
+}
+
+.hero-content {
+    width: 50%; 
+    max-width: 600px; 
+}
+
+.hero-content h1 {
+    font-size: 2.5em;
+    color: #333;
+}
+
+.hero-content p {
+    font-size: 1.2em;
+    color: #666;
+    margin: 20px 0;
+}
+
+.hero-image {
+    width: 50%; 
+    display: flex;
+    justify-content: center; 
+}
+
+.btn-get-started {
+    background-color: #ffcc00;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: 'Poppins', sans-serif; 
+    font-weight: 700; 
+}
+
+.hero-image img {
+    width: 427px; 
+    height: 406px; 
+    object-fit: cover; 
+    border-radius: 15px;
+    box-shadow: 35px 35px 0px rgba(235, 243, 255, 1);
+}
+
+/* Statistics Section */
+.statistics {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px 0;
+    background-color: #f1f1f1;
+    height: auto;
+}
+
+.stat-item {
+    text-align: center;
+    margin: 0 10px;
+}
+
+.stat-item h2 {
+    font-size: 2em;
+    color: #0066cc;
+    margin: 0;
+}
+
+.stat-item p {
+    font-size: 1em;
+    color: #666;
+    margin: 10px 0;
+}
+
+/* Footer */
+footer {
+    background-color: #f9f9f9;
+    padding: 20px 0;
+    border-top: 1px solid #e0e0e0;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center; 
+    gap: 10px;
+}
+
+.footer-logo {
+    margin-right: 60px; 
+    padding-left: 100px;
+}
+
+.footer-logo-kampusmerdeka {
+    margin-right: 60px;
+
+}
+
+.footer-logo img {
+    width: 204px;
+    height: 300px;
+}
+
+.footer-logo-kemdikbud img {
+    width: 78px;
+    height: 75px;
+}
+
+.footer-logo-bisaai img {
+    width: 165px;
+    height: 63px;
+}
+
+.footer-logo-msib img {
+    width: 125px;
+    height: 70px;
+}
+
+.footer-logo-kampusmerdeka img {
+    height: 64px;
+}
+
+.footer-links ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.footer-links ul li {
+    margin-right: 20px;
+}
+
+.footer-links ul li a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.quick-links {
+    margin-top: 20px; 
+    margin-left: 80px;
+}
+
+.footer-contact {
+    display: flex;
+    flex-direction: column; 
+    margin-top: 10px; 
+}
+
+.footer-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+}
+
+.footer-copyright {
+    text-align: center; 
+    margin-top: 10px; 
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-content {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+
+    .hero-image {
+        width: 100%;
+    }
+
+    .statistics {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stat-item {
+        margin-bottom: 20px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-logo {
+        margin-bottom: 20px;
+    }
+}

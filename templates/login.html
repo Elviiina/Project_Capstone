@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="../static/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="login-wrapper">
+      <img src="../static/images/logo.png" alt="Logo" class="logo">
+      <h1 class="login-title">LOG IN</h1>
+
+      {% if error %}
+        <div class="message error">{{ error }}</div>
+      {% endif %}
+
+      <form action="/do_login" method="POST" class="login-form">
+        <div class="input-group">
+          <input type="email" id="email" name="email" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+          <input type="password" id="password" name="password" placeholder="Password" required>
+        </div>
+        <button type="submit" class="login-btn">Log in</button>
+      </form>
+      <a href="#" class="forgot-password">Lupa Password?</a>
+      <p class="register-text">Belum punya akun? <a href="/register" class="register-link">Register</a></p>
+    </div>
+    <svg class="background-vector-before" width="900" height="393" viewBox="0 0 900 393" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M899.908 451.746C269.365 554.294 99.3489 73.0881 60.9283 44.1424C23.5344 -28.5155 -35.1119 -62.6324 29.4542 382.163C94.0204 826.958 636.659 613.883 899.908 451.746Z" fill="#FFD404"/>
+    </svg>
+    <svg class="background-vector-after" width="739" height="584" viewBox="0 0 739 584" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M738.5 546C100.5 578.5 -15.5 81.5001 -50.5 48.5001C-79.6667 -27.8332 -134.2 -68.1999 -119 381C-103.8 830.2 459 678.167 738.5 546Z" fill="#0077B6"/>
+    </svg>                
+  </div>  
+</body>
+</html>

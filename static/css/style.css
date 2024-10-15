@@ -1,0 +1,135 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body */
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Container */
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF;
+
+  }
+  
+  /* Login Wrapper */
+  .login-wrapper {
+    position: relative; /* Menetapkan posisi relatif */
+    z-index: 1;
+    width: 507px;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #FFFFFF;
+    margin: 0 auto;     
+  }
+  
+  /* Logo */
+  .logo {
+    width: 120px;
+    margin: 0 auto;
+  }
+  
+  /* Login Title */
+  .login-title {
+    font-size: 40px;
+    font-weight: 700;
+    margin: 20px 0;
+  }
+  
+  /* Input Group */
+  .input-group {
+    margin-bottom: 20px;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 18px;
+    border: 1px solid #0077B6;
+    border-radius: 10px;
+    outline: none;
+  }
+  
+  /* Button */
+  .login-btn {
+    width: 100%;
+    padding: 20px;
+    background-color: #0077B6;
+    color: white;
+    font-size: 24px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .login-btn:hover {
+    background-color: #005f8b;
+  }
+  
+  /* Forgot Password */
+  .forgot-password {
+    display: block;
+    text-align: right;
+    margin-top: 20px;
+    color: #0077B6;
+    font-size: 18px;
+    text-decoration: none;
+  }
+  
+  /* Register Text */
+  .register-text {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+  
+  .register-link {
+    color: #0077B6;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .register-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Background Vector */
+.background-vector-after {
+    position: absolute;
+    bottom: 0%; 
+    z-index: 0;
+}
+
+.background-vector-before {
+    position: absolute;
+    bottom: 0%; 
+    left: 5%;
+    z-index: 0;
+}
+
+.message {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  color: #fff;
+}
+.message.success {
+  background-color: #4CAF50;
+}
+.message.error {
+  background-color: #f44336; 
+}

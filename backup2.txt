@@ -1,0 +1,57 @@
+import streamlit as st
+from streamlit_option_menu import option_menu
+
+# Fungsi untuk setiap halaman
+def show_dashboard():
+    st.title("Dashboard Admin")
+    st.write("Ini adalah halaman Dashboard.")
+
+def show_survey():
+    st.title("Survey")
+    st.write("Ini adalah halaman Survey.")
+
+def show_users_account():
+    st.title("Users Account")
+    st.write("Ini adalah halaman Users Account.")
+
+# Fungsi untuk menampilkan footer dengan foto dan nama developer
+def show_footer():
+    st.markdown("---")
+    st.markdown("""
+    <div style="text-align: center;">
+        <img src="https://via.placeholder.com/150" alt="Foto Developer" style="border-radius: 50%; width: 150px;">
+        <h4>Developed by [Nama Anda]</h4>
+    </div>
+    """, unsafe_allow_html=True)
+
+# Mengatur konfigurasi layout Streamlit menjadi lebar penuh
+st.set_page_config(layout="wide")
+
+# Header di bagian atas
+with st.container():
+    col1, col2 = st.columns([0.1, 0.9])
+    with col1:
+        st.image("https://via.placeholder.com/50", width=50)  # Ganti dengan URL ikon profil
+    with col2:
+        st.write("Logged in as Admin", align="right")
+
+# Sidebar dengan menu navigasi
+with st.sidebar:
+    selected = option_menu(
+        menu_title="Main Menu",  # Menu utama
+        options=["Dashboard", "Survey", "Users Account"],  # Opsi navigasi
+        icons=["house", "bar-chart", "person"],  # Ikon yang sesuai
+        menu_icon="cast",  # Ikon menu
+        default_index=0,  # Indeks default (pertama kali dirender)
+    )
+
+# Render halaman sesuai pilihan navigasi
+if selected == "Dashboard":
+    show_dashboard()
+elif selected == "Survey":
+    show_survey()
+elif selected == "Users Account":
+    show_users_account()
+
+# Footer di bagian bawah halaman
+show_footer()
