@@ -5,6 +5,7 @@ venv\Scripts\activate  # Di Windows
 
 Jalankan program:
 python run.py
+pilih localhost 5000
 
 Dependensi/Library yang diperlukan:
 Flask   
