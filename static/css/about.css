@@ -54,13 +54,13 @@ nav ul li a {
     border-radius: 5px;
     cursor: pointer;
     font-size: 1em;
-    font-family: 'Poppins', sans-serif; /* Mengatur font untuk tombol */
-    font-weight: 700; /* Mengatur berat font */
+    font-family: 'Poppins', sans-serif; 
+    font-weight: 700; 
 }
 
 .auth-buttons .btn-register {
     background-color: white;
-    color: #0077B6;;
+    color: #0077B6;
 }
 
 .auth-buttons .btn-login {
@@ -69,80 +69,81 @@ nav ul li a {
     border: 2px solid white;
 }
 
-/* Hero Section */
-.hero {
+/* About Section */
+.about {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.about h2 {
+    color: #2d3190;
+    padding-bottom: 50px;
+}
+
+.about-content {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 50px 5%; 
-    background-color: white;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.hero-content {
-    width: 50%; 
-    max-width: 600px; 
+.about-content img {
+    height: 250px;
+    margin-right: 40px;
 }
 
-.hero-content h1 {
-    font-size: 2.5em;
+.what-aerosite {
+    max-width: 700px;
+    text-align: left;
+    color: #2d3190;
+}
+
+.what-aerosite-content {
+    text-align: justify;
     color: #333;
 }
 
-.hero-content p {
-    font-size: 1.2em;
-    color: #666;
-    margin: 20px 0;
-}
-
-.hero-image {
-    width: 50%; 
-    display: flex;
-    justify-content: center; 
-}
-
-.btn-get-started {
-    background-color: #ffcc00;
-    padding: 10px 30px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    font-family: 'Poppins', sans-serif; 
-    font-weight: 700; 
-}
-
-.hero-image img {
-    width: 427px; 
-    height: 406px; 
-    object-fit: cover; 
-    border-radius: 15px;
-    box-shadow: 35px 35px 0px rgba(235, 243, 255, 1);
-}
-
-/* Statistics Section */
-.statistics {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px 0;
-    background-color: #f1f1f1;
-    height: auto;
-}
-
-.stat-item {
+/* Member Section */
+.members {
     text-align: center;
-    margin: 0 10px;
+    padding: 50px 20px;
 }
 
-.stat-item h2 {
-    font-size: 2em;
-    color: #0066cc;
-    margin: 0;
+.members h2 {
+    color: #2d3190;
 }
 
-.stat-item p {
-    font-size: 1em;
-    color: #666;
-    margin: 10px 0;
+.member-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.member-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    padding: 20px;
+    text-align: center;
+}
+
+.member-card img {
+    height: 100px;
+    margin-bottom: 15px;
+}
+
+.member-card h4 {
+    margin-bottom: 10px;
+}
+
+.social-links a {
+    display: block;
+    color: #005bb5;
+    text-decoration: none;
+    margin: 5px 0;
 }
 
 /* Footer */
@@ -233,12 +234,10 @@ footer {
     font-size: 0.6em;
 }
 
-
 /* Responsive Styles */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
-        
         align-items: center;
         display: flex;
         flex-wrap: wrap;
@@ -265,40 +264,46 @@ footer {
         justify-content: center;
         width: 100%;
     }
-    
-    
-    .hero {
-        flex-direction: column;
-        text-align: center;
-    }
 
-    .hero-content {
-        width: 100%;
+    .about-content {
+        flex-direction: column;
+        align-items: center;
         margin-bottom: 30px;
     }
 
-    .hero-image {
-        width: 100%;
-    }
-
-    .statistics {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .stat-item {
+    .about-content img {
+        margin-right: 0;
         margin-bottom: 20px;
+        height: auto; /* Maintain aspect ratio */
+        max-width: 100%; /* Responsive image */
     }
 
-    .footer-container {
-        flex-direction: column;
-        text-align: center;
+    .what-aerosite {
+        text-align: center; /* Center the text on smaller screens */
+    }
+
+    .members {
+        padding: 20px 10px;
+    }
+
+    .member-list {
+        flex-direction: column; /* Stack member cards vertically */
+        align-items: center;
+    }
+
+    .member-card {
+        width: 100%; /* Responsive width for member card */
+        max-width: 300px; /* Limit max width */
+    }
+
+    .footer-inner {
+        flex-direction: column; /* Stack footer items vertically */
+        align-items: center;
     }
 
     .footer-logo {
         margin-bottom: 20px;
-        width: 100%;
-        align-items: center;
+        margin: 0;
     }
 
     .quick-links {
