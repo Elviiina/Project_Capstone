@@ -16,3 +16,47 @@
     color: #0066cc;
     border: 2px solid #0066cc;
 }
+
+elif selected == "Isi Survei":
+                    st.title("Isi Survei")
+                    with st.form("survey_form"):
+                        questions = {
+                            "Seat Comfort": "Seat Comfort",
+                            "Food and Drink": "Food and Drink",
+                            "Departure/Arrival Time Convenience": "Departure/Arrival Time Convenience",
+                            "Gate Location": "Gate Location",
+                            "Inflight Wifi Service": "Inflight Wifi Service",
+                            "Inflight Entertainment": "Inflight Entertainment",
+                            "Online Support": "Online Support",
+                            "Ease of Online Booking": "Ease of Online Booking",
+                            "On-board Service": "On-board Service",
+                            "Leg Room Service": "Leg Room Service",
+                            "Baggage Handling": "Baggage Handling",
+                            "Check-in Service": "Check-in Service",
+                            "Cleanliness": "Cleanliness",
+                            "Online Boarding": "Online Boarding"
+                        }
+
+                        question_keys = list(questions.keys())
+                        for i, (key, question) in enumerate(questions.items()):
+                            # Membagi kolom
+                            cols = st.columns(3)
+                            
+                            # Menampilkan radio button dalam kolom
+                            with cols[i % 3]:  # Menggunakan modulus untuk menyebar radio button
+                                st.write(question)
+                                st.radio("Skala 1-5", options=[1, 2, 3, 4, 5], key=key, horizontal=True)
+
+                            # Baris baru setelah setiap 3 radio button
+                            if (i + 1) % 3 == 0:
+                                st.markdown("---")
+
+                        submit_button = st.form_submit_button("Kirim Survei")
+                    
+                    if submit_button:
+                        st.success("Data survei berhasil disimpan.")
+                        survei = True
+
+# unique_cols = ['Gender', 'Type of Travel', 'Class']
+# for col in unique_cols:
+#     print(f"Nilai unik di kolom '{col}': {df[col].unique()}")

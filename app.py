@@ -31,7 +31,8 @@ class User(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    token = db.Column(db.String(100), nullable=True)
+    token = db.Column(db.String(100), nullable=True, default= None)
+    survey = db.Column(db.Boolean, default=False)
 
     def __init__(self, name, email, password):
         self.name = name
@@ -47,7 +48,9 @@ class Admin(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     token = db.Column(db.String(100), nullable=True)
-
+    satisfied_count = db.Column(db.Boolean, default=False) 
+    dissatisfied_count = db.Column(db.Boolean, default=False)  
+    survey_count = db.Column(db.Boolean, default=False)  
 
 with app.app_context():
     db.create_all()
@@ -63,6 +66,9 @@ with app.app_context():
 def home():
     return render_template('home.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 @app.route('/login')
 def login():
@@ -176,26 +182,26 @@ def admin_logout():
 
 @app.route('/get_users', methods=['GET'])
 def get_users():
-    if 'admin_token' not in session:
-        return jsonify({'message': 'Unauthorized access'}), 403
+    # if 'admin_token' not in session:
+    #     return jsonify({'message': 'Unauthorized access'}), 403
     
     users = User.query.all()
-    users_data = [{'id': user.id, 'name': user.name, 'email': user.email} for user in users]
+    users_data = [{'id': user.id, 'name': user.name, 'email': user.email, 'token': user.token} for user in users]
     return jsonify(users_data), 200
 
 
-@app.route('/delete_user/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    if 'admin_token' not in session:
-        return jsonify({'message': 'Unauthorized access'}), 403
+# @app.route('/delete_user/<int:user_id>', methods=['DELETE'])
+# def delete_user(user_id):
+#     if 'admin_token' not in session:
+#         return jsonify({'message': 'Unauthorized access'}), 403
 
-    user = User.query.get(user_id)
-    if user:
-        db.session.delete(user)
-        db.session.commit()
-        return jsonify({'message': 'User deleted successfully'}), 200
-    else:
-        return jsonify({'message': 'User not found'}), 404
+#     user = User.query.get(user_id)
+#     if user:
+#         db.session.delete(user)
+#         db.session.commit()
+#         return jsonify({'message': 'User deleted successfully'}), 200
+#     else:
+#         return jsonify({'message': 'User not found'}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

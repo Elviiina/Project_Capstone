@@ -21,5 +21,3 @@ if __name__ == "__main__":
     
     admin_thread.start()
     user_thread.start()
-
-#test
