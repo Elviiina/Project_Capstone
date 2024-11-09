@@ -71,7 +71,11 @@ def home():
 def login():
     error_msg = session.pop('error', None)  
     return render_template('login.html', error=error_msg)
-  
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
