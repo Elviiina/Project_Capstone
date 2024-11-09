@@ -63,11 +63,16 @@ with app.app_context():
 def home():
     return render_template('home.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 
 @app.route('/login')
 def login():
     error_msg = session.pop('error', None)  
-    return render_template('login.html', error=error_msg)  
+    return render_template('login.html', error=error_msg)
+  
 
 
 @app.route('/register', methods=['GET', 'POST'])
