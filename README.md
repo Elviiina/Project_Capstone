@@ -16,5 +16,10 @@ secrets
 email-validator
 streamlit
 streamlit_option_menu
+pandas
+scikit-learn
+pickle
+matplot
+seaborn
 
 Note: Kemungkinan depedensi tidak perlu diinstall lagi karena sudah terinstall di folder lokal project.

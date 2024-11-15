@@ -48,9 +48,9 @@ class Admin(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     token = db.Column(db.String(100), nullable=True)
-    satisfied_count = db.Column(db.Boolean, default=False) 
-    dissatisfied_count = db.Column(db.Boolean, default=False)  
-    survey_count = db.Column(db.Boolean, default=False)  
+    satisfied_count = db.Column(db.Integer, default=0) 
+    dissatisfied_count = db.Column(db.Integer, default=0)  
+    survey_count = db.Column(db.Integer, default=0)  
 
 with app.app_context():
     db.create_all()
@@ -64,7 +64,8 @@ with app.app_context():
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    admin = Admin.query.first()
+    return render_template('home.html', survey_count = admin.survey_count, satisfied_count = admin.satisfied_count, dissatisfied_count = admin.dissatisfied_count)
 
 
 @app.route('/login')

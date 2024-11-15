@@ -1,7 +1,9 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from app import app, db, User
+from app import app, db, User, Admin
 import time
+import pandas as pd
+import pickle
 
 st.set_page_config(page_title="Aerosite for User", page_icon=":airplane:", layout="wide")
 
@@ -35,6 +37,8 @@ try:
         else:
             user = User.query.filter_by(token=session_token).first()  
             if user:
+                open_model = open("model/model_satisfaction.sav", "rb")
+                model = pickle.load(open_model)
                 if user.survey:
                     st.session_state.step = 1
                 else:
@@ -58,7 +62,7 @@ try:
                                 col1, col2, col3, col4 = st.columns(4)
                                 
                                 with col1:
-                                    gender = st.selectbox("Gender", options=["Male", "Female", "Other"], help='*required')
+                                    gender = st.selectbox("Gender", options=["Male", "Female"], help='*required')
                                     st.markdown('<br>', unsafe_allow_html=True)
                                     flight_distance = st.number_input("Flight Distance", min_value=0, value=0, help='*required')
                                     st.markdown('<br>', unsafe_allow_html=True)
@@ -70,13 +74,13 @@ try:
                                     st.markdown('<br>', unsafe_allow_html=True)
                                 
                                 with col3:
-                                    travel_type = st.selectbox("Type of Travel", options=["Business", "Personal", "Other"], help='*required')
+                                    travel_type = st.selectbox("Type of Travel", options=["Business travel", "Personal Travel"], help='*required')
                                     st.markdown('<br>', unsafe_allow_html=True)
                                     arrival_delay = st.number_input("Arrival Delay in Minutes", min_value=0, value=0, help='*required')
                                     st.markdown('<br>', unsafe_allow_html=True)
                                 
                                 with col4:
-                                    flight_class = st.selectbox("Class", options=["Economy", "Business", "First Class"], help='*required')
+                                    flight_class = st.selectbox("Class", options=["Eco", "Eco Plus", "Business"], help='*required')
                                     st.markdown('<br>', unsafe_allow_html=True)
 
                             st.title("Isi Survei")
@@ -99,6 +103,8 @@ try:
                                     "Online Boarding": "Online Boarding"
                                 }
 
+                                survey_responses = {}
+
                                 question_keys = list(questions.keys())
                                 for i in range(0, len(question_keys), 3):
                                     cols = st.columns(3)
@@ -108,27 +114,72 @@ try:
                                             question = question_keys[i + j]
                                             with col:
                                                 st.write(questions[question])
-                                                st.radio("Skala 1-5", options=[1, 2, 3, 4, 5], key=question, horizontal=True, help='*required')
+                                                survey_responses[question] = st.radio("Skala 1-5", options=[1, 2, 3, 4, 5], key=question, horizontal=True, help='*required')
 
                                     st.markdown("---")
 
-                                submit_button = st.form_submit_button("Submit")
+                            submit_button = st.form_submit_button("Submit")
 
-                                if submit_button:
-                                    with st.spinner("Mengirim survei..."):
-                                        user.survey = True
-                                        db.session.commit()
-                                        time.sleep(3)
-                                    st.rerun()
+                            if submit_button:
+                                with st.spinner("Mengirim survei..."):
+                                    data_new_record = pd.DataFrame({
+                                        'Gender': [1 if gender == "Male" else 0], 
+                                        'Age': [age],
+                                        'Type of Travel': [1 if travel_type == "Business travel" else 0],
+                                        'Class': [2 if flight_class == "Business" else (1 if flight_class == "Eco Plus" else 0)],
+                                        'Flight Distance': [flight_distance],
+                                        'Seat comfort': [survey_responses["Seat Comfort"]],
+                                        'Departure/Arrival time convenient': [survey_responses["Departure/Arrival Time Convenience"]],
+                                        'Food and drink': [survey_responses["Food and Drink"]],
+                                        'Gate location': [survey_responses["Gate Location"]],
+                                        'Inflight wifi service': [survey_responses["Inflight Wifi Service"]],
+                                        'Inflight entertainment': [survey_responses["Inflight Entertainment"]],
+                                        'Online support': [survey_responses["Online Support"]],
+                                        'Ease of Online booking': [survey_responses["Ease of Online Booking"]],
+                                        'On-board service': [survey_responses["On-board Service"]],
+                                        'Leg room service': [survey_responses["Leg Room Service"]],
+                                        'Baggage handling': [survey_responses["Baggage Handling"]],
+                                        'Checkin service': [survey_responses["Check-in Service"]],
+                                        'Cleanliness': [survey_responses["Cleanliness"]],
+                                        'Online boarding': [survey_responses["Online Boarding"]],
+                                        'Departure Delay in Minutes': [departure_delay],
+                                        'Arrival Delay in Minutes': [arrival_delay]
+                                    })
+
+                                    satisfaction_prediction = model.predict(data_new_record)
+                                    prediction_text = "satisfied" if satisfaction_prediction[0] == 1 else "dissatisfied"
+                                    
+                                    data_new_record['satisfaction'] = prediction_text
+                                    data_new_record['Customer Type'] = None
+                                    data_new_record['Gender'] = data_new_record['Gender'].replace({1: 'Male', 0: 'Female'})
+                                    data_new_record['Type of Travel'] = data_new_record['Type of Travel'].replace({1: 'Business travel', 0: 'Personal Travel'}) 
+                                    data_new_record['Class'] = data_new_record['Class'].replace({2: "Business", 1: 'Eco Plus', 0: 'Eco'})
+
+                                    st.success(f"Prediksi Kepuasan: {prediction_text}")
+                                    
+                                    df = pd.read_csv("./dataset/Invistico_Airline.csv")
+                                    df_concated = pd.concat([df, data_new_record], ignore_index=True) 
+                                    df_concated.to_csv("./dataset/Invistico_Airline.csv", index=False)
+
+                                    user.survey = True
+                                    admin = Admin.query.first()
+                                    admin.survey_count += 1
+                                    if satisfaction_prediction[0] == 1:
+                                        admin.satisfied_count += 1
+                                    else:
+                                        admin.dissatisfied_count += 1
+                                    db.session.commit()
+                                    time.sleep(2)
+                                st.rerun()
 
                     elif st.session_state.step == 1:
                         st.title("Thanks for your feedback!")
-                        st.markdown("<h1 style='text-align: center; color: #4CAF50;'>🎉 Terima Kasih!</h1>", unsafe_allow_html=True)
-                        st.markdown("<p style='text-align: center; font-size: 20px;'>Kami menghargai umpan balik Anda.</p>", unsafe_allow_html=True)
+                        st.markdown("<h1 style='text-align: left; color: #4CAF50;'>🎉 Terima Kasih!</h1>", unsafe_allow_html=True)
+                        st.markdown("<p style='text-align: left; font-size: 20px;'>Kami menghargai umpan balik Anda.</p>", unsafe_allow_html=True)
                         
                         st.balloons()
 
-                        st.markdown("<p style='text-align: center; font-size: 24px; color: #FFA500;'>✨ Survey Anda telah terkirim dengan sukses!</p>", unsafe_allow_html=True)
+                        st.markdown("<p style='text-align: left; font-size: 24px; color: #FFA500;'>✨ Survey Anda telah terkirim dengan sukses!</p>", unsafe_allow_html=True)
                 
                 elif selected == "Hasil Survei":
                     st.title("Hasil Survei")
@@ -146,5 +197,5 @@ try:
                 show_error("Token tidak valid. Akses tidak diizinkan.")
                 
 except Exception as e:
-    show_error(f"Error! Hubungi Admin jika menurut anda ini adalah kesalahan.")
+    show_error(f"Error! Hubungi Admin jika menurut anda ini adalah kesalahan. INFO: {e}")
 
