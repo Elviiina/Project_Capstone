@@ -50,14 +50,12 @@ try:
 
                 if selected == "Overview":
                     st.title("Overview")
-                    # Deskripsi Data
                     st.header("Deskripsi Data")
                     st.text(f"Total Jumlah Data: {df.shape[0]}")
                     st.text(f"Jumlah Fitur: {df.shape[1]}")
                     st.text("Dataset:")
                     st.dataframe(df.head())
 
-                    # Distribusi Kepuasan Pelanggan
                     st.header("Distribusi Kepuasan Pelanggan")
                     satisfaction_counts = df['satisfaction'].value_counts()
                     fig1, ax1 = plt.subplots()
@@ -65,12 +63,10 @@ try:
                     ax1.axis('equal')
                     st.pyplot(fig1)
 
-                    # Informasi Tipe Pelanggan
                     st.header("Informasi Jenis Pelanggan")
                     customer_type_counts = df['Customer Type'].value_counts()
                     st.bar_chart(customer_type_counts)
 
-                    # Distribusi Fitur Demografis
                     st.header("Distribusi Fitur Demografis")
                     col1, col2 = st.columns(2)
                     with col1:
@@ -84,12 +80,10 @@ try:
                         sns.histplot(df['Age'], kde=True, bins=20, ax=ax2)
                         st.pyplot(fig2)
 
-                    # Distribusi Kelas Penerbangan
                     st.subheader("Distribusi Kelas Penerbangan")
                     class_counts = df['Class'].value_counts()
                     st.bar_chart(class_counts)
 
-                    # Rata-rata Kenyamanan
                     st.subheader("Rata-rata Rating Kenyamanan")
                     comfort_features = ["Seat comfort", "Inflight wifi service", "Inflight entertainment", 
                                         "Food and drink", "Leg room service"]
@@ -99,17 +93,14 @@ try:
                 elif selected == "Analysis":
                     st.title("Analysis")
 
-                    # Analisis Kepuasan Pelanggan Berdasarkan Kelas Penerbangan
                     st.header("Analisis Kepuasan Berdasarkan Kelas Penerbangan")
                     satisfaction_by_class = df.groupby(['Class', 'satisfaction']).size().unstack()
                     st.bar_chart(satisfaction_by_class)
 
-                    # Pengaruh Jenis Perjalanan terhadap Kepuasan
                     st.header("Analisis Tipe Perjalanan Terhadap Kepuasan")
                     satisfaction_by_travel = df.groupby(['Type of Travel', 'satisfaction']).size().unstack()
                     st.bar_chart(satisfaction_by_travel)
 
-                    # Korelasi Antar Fitur
                     st.header("Korelasi Antar Fitur Numerik")
                     numeric_features = ["Flight Distance", "Departure Delay in Minutes", "Arrival Delay in Minutes",
                                         "Seat comfort", "Inflight wifi service", "Inflight entertainment"]
@@ -118,13 +109,11 @@ try:
                     sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", ax=ax3)
                     st.pyplot(fig3)
 
-                    # Pengaruh Keterlambatan pada Kepuasan
                     st.header("Pengaruh Keterlambatan pada Kepuasan")
                     fig4, ax4 = plt.subplots()
                     sns.scatterplot(data=df, x="Departure Delay in Minutes", y="Arrival Delay in Minutes", hue="satisfaction", ax=ax4)
                     st.pyplot(fig4)
 
-                    # Pengaruh Fitur Kenyamanan terhadap Kepuasan
                     st.header("Pengaruh Fitur Kenyamanan terhadap Kepuasan")
                     comfort_features = ["Seat comfort", "Inflight wifi service", "Inflight entertainment", 
                                         "Food and drink", "Leg room service"]

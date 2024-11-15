@@ -154,8 +154,6 @@ try:
                                     data_new_record['Gender'] = data_new_record['Gender'].replace({1: 'Male', 0: 'Female'})
                                     data_new_record['Type of Travel'] = data_new_record['Type of Travel'].replace({1: 'Business travel', 0: 'Personal Travel'}) 
                                     data_new_record['Class'] = data_new_record['Class'].replace({2: "Business", 1: 'Eco Plus', 0: 'Eco'})
-
-                                    st.success(f"Prediksi Kepuasan: {prediction_text}")
                                     
                                     df = pd.read_csv("./dataset/Invistico_Airline.csv")
                                     df_concated = pd.concat([df, data_new_record], ignore_index=True) 
