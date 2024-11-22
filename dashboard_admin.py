@@ -5,6 +5,7 @@ import time
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import plotly.express as px
 
 st.set_page_config(page_title="Aerosite for Admin", page_icon=":airplane:", layout="wide")
 
@@ -50,78 +51,129 @@ try:
 
                 if selected == "Overview":
                     st.title("Overview")
-                    st.header("Deskripsi Data")
+                    st.subheader("Deskripsi Data")
                     st.text(f"Total Jumlah Data: {df.shape[0]}")
                     st.text(f"Jumlah Fitur: {df.shape[1]}")
                     st.text("Dataset:")
-                    st.dataframe(df.head())
+                    st.dataframe(df)
 
-                    st.header("Distribusi Kepuasan Pelanggan")
+                    st.subheader("Distribusi Kepuasan Pelanggan")
                     satisfaction_counts = df['satisfaction'].value_counts()
-                    fig1, ax1 = plt.subplots()
-                    ax1.pie(satisfaction_counts, labels=satisfaction_counts.index, autopct='%1.1f%%', startangle=90)
-                    ax1.axis('equal')
-                    st.pyplot(fig1)
+                    fig1 = px.pie(satisfaction_counts, 
+                                names=satisfaction_counts.index, 
+                                values=satisfaction_counts.values, 
+                                title="Distribusi Kepuasan Pelanggan",
+                                color=satisfaction_counts.index,  
+                                color_discrete_map={"satisfied": "blue", "dissatisfied": "red"})  
+                    st.plotly_chart(fig1)
 
-                    st.header("Informasi Jenis Pelanggan")
+                    st.subheader("Informasi Jenis Pelanggan")
                     customer_type_counts = df['Customer Type'].value_counts()
-                    st.bar_chart(customer_type_counts)
+                    fig2 = px.bar(customer_type_counts, 
+                                x=customer_type_counts.index, 
+                                y=customer_type_counts.values, 
+                                title="Informasi Jenis Pelanggan", 
+                                color=customer_type_counts.index,
+                                color_discrete_map={"Loyal Customer": "#1E90FF", "disloyal Customer": "#D9534F"},
+                                labels={"Customer Type":"Jenis Pelanggan", "y":"Jumlah"})  
+                    st.plotly_chart(fig2)
 
-                    st.header("Distribusi Fitur Demografis")
+                    st.subheader("Distribusi Fitur Demografis")
                     col1, col2 = st.columns(2)
+                    
                     with col1:
-                        st.subheader("Distribusi Gender")
                         gender_counts = df['Gender'].value_counts()
-                        st.bar_chart(gender_counts)
+                        fig3 = px.bar(gender_counts, 
+                                    x=gender_counts.index, 
+                                    y=gender_counts.values, 
+                                    title="Distribusi Gender",
+                                    color=gender_counts.index,
+                                    color_discrete_map={"Male": "#1E90FF", "Female": "#FF69B4"},
+                                    category_orders={"Gender": ["Male", "Female"]},
+                                    labels={"Gender":"Jenis Kelamin", "y":"Jumlah"}) 
+                        st.plotly_chart(fig3)
 
                     with col2:
-                        st.subheader("Distribusi Usia")
-                        fig2, ax2 = plt.subplots()
-                        sns.histplot(df['Age'], kde=True, bins=20, ax=ax2)
-                        st.pyplot(fig2)
+                        fig4 = px.histogram(df, x='Age', nbins=20, title="Distribusi Usia", marginal="box")
+                        fig4.update_layout(
+                            xaxis_title="Usia", 
+                            yaxis_title="Jumlah"
+                        )
+                        st.plotly_chart(fig4)
 
                     st.subheader("Distribusi Kelas Penerbangan")
                     class_counts = df['Class'].value_counts()
-                    st.bar_chart(class_counts)
+                    fig5 = px.bar(class_counts, 
+                                x=class_counts.index, 
+                                y=class_counts.values, 
+                                title="Distribusi Kelas Penerbangan", 
+                                color=class_counts.index, 
+                                color_discrete_map={"Eco": "#A9A9A9", "Eco Plus": "#006400", "Business": "#1F4E79"},
+                                category_orders={"Class": ["Business", "Eco Plus", "Eco"]},
+                                labels={"Class":"Kelas Penerbangan", "y":"Jumlah"})
+                    st.plotly_chart(fig5)
 
                     st.subheader("Rata-rata Rating Kenyamanan")
-                    comfort_features = ["Seat comfort", "Inflight wifi service", "Inflight entertainment", 
-                                        "Food and drink", "Leg room service"]
+                    comfort_features = ["Seat comfort", "Food and drink", "Inflight wifi service", "Inflight entertainment", "Leg room service"]
                     comfort_ratings = df[comfort_features].mean()
-                    st.bar_chart(comfort_ratings)
+                    fig6 = px.bar(comfort_ratings, 
+                                x=comfort_ratings.index, 
+                                y=comfort_ratings.values, 
+                                title="Rata-rata Rating Kenyamanan",
+                                color=comfort_ratings.values,
+                                color_continuous_scale="Blues", range_color=[2, 4],
+                                labels={"index":"Fitur Kenyamanan", "y":"Rata-rata"}) 
+                    st.plotly_chart(fig6)
 
                 elif selected == "Analysis":
                     st.title("Analysis")
 
-                    st.header("Analisis Kepuasan Berdasarkan Kelas Penerbangan")
+                    st.subheader("Analisis Kepuasan Berdasarkan Kelas Penerbangan")
                     satisfaction_by_class = df.groupby(['Class', 'satisfaction']).size().unstack()
-                    st.bar_chart(satisfaction_by_class)
+                    fig7 = px.bar(satisfaction_by_class, 
+                                barmode='group', 
+                                title="Kepuasan Berdasarkan Kelas Penerbangan", 
+                                color=satisfaction_by_class.index,
+                                color_discrete_map={"Eco": "#A9A9A9", "Eco Plus": "#006400", "Business": "#1F4E79"},
+                                category_orders={"Class": ["Business", "Eco Plus", "Eco"]},
+                                labels={"Class":"Kelas Penerbangan", "value":"Jumlah Kepuasan"})  
+                    st.plotly_chart(fig7)
 
-                    st.header("Analisis Tipe Perjalanan Terhadap Kepuasan")
+                    st.subheader("Analisis Tipe Perjalanan Terhadap Kepuasan")
                     satisfaction_by_travel = df.groupby(['Type of Travel', 'satisfaction']).size().unstack()
-                    st.bar_chart(satisfaction_by_travel)
+                    fig8 = px.bar(satisfaction_by_travel, 
+                                barmode='group', 
+                                title="Tipe Perjalanan Terhadap Kepuasan", 
+                                color=satisfaction_by_travel.index,
+                                color_discrete_map={"Personal Travel": "#ADD8E6", "Business travel": "#2C3E50"},
+                                labels={"Type of Travel":"Tipe Perjalanan", "value":"Jumlah Kepuasan"})  
+                    st.plotly_chart(fig8)
 
-                    st.header("Korelasi Antar Fitur Numerik")
-                    numeric_features = ["Flight Distance", "Departure Delay in Minutes", "Arrival Delay in Minutes",
-                                        "Seat comfort", "Inflight wifi service", "Inflight entertainment"]
+                    st.subheader("Korelasi Antar Fitur Numerik")
+                    numeric_features = ["Flight Distance", "Departure Delay in Minutes", "Arrival Delay in Minutes", "Seat comfort", "Inflight wifi service", "Inflight entertainment"]
                     correlation_matrix = df[numeric_features].corr()
-                    fig3, ax3 = plt.subplots(figsize=(8, 6))
-                    sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", ax=ax3)
-                    st.pyplot(fig3)
+                    fig9 = px.imshow(correlation_matrix, text_auto=True, title="Korelasi Antar Fitur Numerik", color_continuous_scale="RdBu")
+                    st.plotly_chart(fig9)
 
-                    st.header("Pengaruh Keterlambatan pada Kepuasan")
-                    fig4, ax4 = plt.subplots()
-                    sns.scatterplot(data=df, x="Departure Delay in Minutes", y="Arrival Delay in Minutes", hue="satisfaction", ax=ax4)
-                    st.pyplot(fig4)
+                    st.subheader("Pengaruh Keterlambatan pada Kepuasan")
+                    fig10 = px.scatter(df, 
+                                    x="Departure Delay in Minutes", 
+                                    y="Arrival Delay in Minutes", 
+                                    color="satisfaction", 
+                                    title="Pengaruh Keterlambatan pada Kepuasan",
+                                    color_discrete_map={"satisfied": "blue", "dissatisfied": "red"})  
+                    st.plotly_chart(fig10)
 
-                    st.header("Pengaruh Fitur Kenyamanan terhadap Kepuasan")
-                    comfort_features = ["Seat comfort", "Inflight wifi service", "Inflight entertainment", 
-                                        "Food and drink", "Leg room service"]
+                    st.subheader("Pengaruh Fitur Kenyamanan terhadap Kepuasan")
+                    comfort_features = ["Seat comfort", "Inflight wifi service", "Inflight entertainment", "Food and drink", "Leg room service"]
                     for feature in comfort_features:
-                        st.subheader(f"Pengaruh {feature}")
-                        fig5, ax5 = plt.subplots()
-                        sns.boxplot(data=df, x="satisfaction", y=feature, ax=ax5)
-                        st.pyplot(fig5)
+                        fig11 = px.box(df, 
+                                    x="satisfaction", 
+                                    y=feature, 
+                                    title=f"Pengaruh {feature} terhadap Kepuasan",
+                                    color="satisfaction",
+                                    color_discrete_map={"satisfied": "#A3C9FF", "dissatisfied": "#F4A6A6"})  
+                        st.plotly_chart(fig11)
 
                 elif selected == "Setting":
                     st.title("Setting")
