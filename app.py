@@ -5,6 +5,7 @@ from email_validator import validate_email, EmailNotValidError
 from datetime import timedelta
 import secrets
 
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
@@ -61,6 +62,18 @@ with app.app_context():
         db.session.commit()
 
 # Routes
+@app.route('/statistics', methods=['GET'])
+def statistics():
+    admin = Admin.query.first()
+    if admin:
+        data = {
+            "survey_count": admin.survey_count,
+            "satisfied_count": admin.satisfied_count,
+            "dissatisfied_count": admin.dissatisfied_count
+        }
+        return jsonify(data)
+    else:
+        return jsonify({"error": "No admin found"}), 404
 
 @app.route('/')
 def home():
@@ -192,6 +205,57 @@ def get_users():
     users_data = [{'id': user.id, 'name': user.name, 'email': user.email, 'token': user.token} for user in users]
     return jsonify(users_data), 200
 
+# @app.route('/submit_survey', methods=['POST'])
+# def submit_survey():
+#     if 'user_token' not in session:
+#         return jsonify({'error': 'Unauthorized access'}), 403
+
+#     token = session['user_token']
+#     user = User.query.filter_by(token=token).first()
+#     if not user:
+#         return jsonify({'error': 'User not found'}), 404
+
+#     # Contoh data survei dari request
+#     survey_data = {
+#         "question1": request.form['question1'],
+#         "question2": request.form['question2'],
+#         # Tambahkan data survei lainnya
+#     }
+#     prediction = "satisfied"  # Contoh prediksi (ganti dengan model prediksi Anda)
+
+#     # Simpan survei ke database
+#     new_survey = Survey(
+#         user_id=user.id,
+#         data=json.dumps(survey_data),
+#         prediction=prediction
+#     )
+#     db.session.add(new_survey)
+#     db.session.commit()
+
+#     return jsonify({'message': 'Survey submitted successfully', 'prediction': prediction})
+
+# @app.route('/user_surveys', methods=['GET'])
+# def user_surveys():
+#     if 'user_token' not in session:
+#         return jsonify({'error': 'Unauthorized access'}), 403
+
+#     token = session['user_token']
+#     user = User.query.filter_by(token=token).first()
+#     if not user:
+#         return jsonify({'error': 'User not found'}), 404
+
+#     # Ambil survei yang terkait dengan user
+#     surveys = Survey.query.filter_by(user_id=user.id).all()
+#     survey_list = [
+#         {
+#             'id': survey.id,
+#             'data': json.loads(survey.data),
+#             'prediction': survey.prediction,
+#             'timestamp': survey.timestamp
+#         } for survey in surveys
+#     ]
+
+#     return jsonify({'surveys': survey_list})
 
 # @app.route('/delete_user/<int:user_id>', methods=['DELETE'])
 # def delete_user(user_id):
